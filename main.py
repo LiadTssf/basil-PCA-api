@@ -32,4 +32,10 @@ async def predict(input: SensorInput):
     X_scaled = scaler.transform(X)
     X_pca = pca.transform(X_scaled)
     prediction = clf.predict(X_pca)[0]
-    return {"status": prediction}
+    explained_var = pca.explained_variance_ratio_.tolist()
+    
+    return {
+        "status": prediction,
+        "pca_components": X_pca.tolist()[0],
+        "explained_variance": explained_var
+    }
