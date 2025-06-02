@@ -3,6 +3,7 @@ from pydantic import BaseModel
 import joblib
 import numpy as np
 from fastapi.middleware.cors import CORSMiddleware
+import httpx
 
 app = FastAPI()
 
@@ -34,6 +35,13 @@ async def predict(input: SensorInput):
     prediction = clf.predict(X_pca)[0]
     explained_var = pca.explained_variance_ratio_.tolist()
     
+@app.get("/api/garden")
+async def get_garden_data():
+    async with httpx.AsyncClient() as client:
+        response = await client.get("https://gardenpi.duckdns.org/")
+        response.raise_for_status()  # Throw 4xx/5xx errors
+        return response.json()    
+        
     return {
         "status": prediction,
         "pca_components": X_pca.tolist()[0],
