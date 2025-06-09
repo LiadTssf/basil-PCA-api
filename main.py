@@ -9,9 +9,9 @@ app = FastAPI()
 
 app.add_middleware(
     CORSMiddleware,
-        allow_origins=[
+    allow_origins=[
         "https://plant-talk.vercel.app",  # production frontend
-        "http://localhost:3000",          # development frontend
+        "http://localhost:5173",          # development frontend
     ],
     allow_credentials=True,
     allow_methods=["*"],
