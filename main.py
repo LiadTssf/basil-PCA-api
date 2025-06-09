@@ -34,6 +34,12 @@ async def predict(input: SensorInput):
     X_pca = pca.transform(X_scaled)
     prediction = clf.predict(X_pca)[0]
     explained_var = pca.explained_variance_ratio_.tolist()
+
+    return {
+        "status": prediction,
+        "pca_components": X_pca.tolist()[0],
+        "explained_variance": explained_var
+    }
     
 @app.get("/api/garden")
 async def get_garden_data():
@@ -42,8 +48,3 @@ async def get_garden_data():
         response.raise_for_status()  # Throw 4xx/5xx errors
         return response.json()    
         
-    return {
-        "status": prediction,
-        "pca_components": X_pca.tolist()[0],
-        "explained_variance": explained_var
-    }
